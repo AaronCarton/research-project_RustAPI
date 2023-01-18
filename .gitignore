@@ -1,4 +1,6 @@
 /target
 .vscode
 todo
+firebase-credentials.json
 
+frontend/.env
