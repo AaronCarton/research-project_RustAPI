@@ -7,15 +7,17 @@ use serde_json;
 #[table_name = "users"]
 pub struct User {
     pub id: i32,
-    pub username: Option<String>,
-    pub score: Option<i32>,
-    pub created: Option<std::time::SystemTime>,
+    pub uid: String,
+    pub role: i32,
+    pub username: String,
+    pub score: i32,
 }
 
 #[derive(Insertable, Deserialize)]
 #[table_name = "users"]
 pub struct NewUser {
+    pub uid: String,
+    pub role: Option<i32>,
     pub username: Option<String>,
     pub score: Option<i32>,
-    pub created: Option<std::time::SystemTime>,
 }

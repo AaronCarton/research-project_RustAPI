@@ -2,9 +2,10 @@
 
 diesel::table! {
     users (id) {
-        id -> Int4,
-        username -> Nullable<Text>,
-        score -> Nullable<Int4>,
-        created -> Nullable<Timestamp>,
+        id -> Integer,
+        uid -> Varchar,
+        role -> Integer,
+        username -> Varchar,
+        score -> Integer,
     }
 }
