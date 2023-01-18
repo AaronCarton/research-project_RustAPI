@@ -5,16 +5,48 @@ extern crate diesel;
 #[macro_use]
 extern crate diesel_migrations;
 extern crate dotenv;
+mod authguard;
 mod db;
 mod models;
+mod roleguard;
 mod schema;
 mod user_service;
+use authguard::AuthGuard;
+use db::establish_connection;
 use diesel_migrations::embed_migrations;
 use models::{NewUser, User};
-use rocket::fs::{relative, FileServer};
+use rocket::routes;
 use rocket::serde::json::Json;
+use rocket::{http::Status, response::status, State};
+use rocket_firebase_auth::{auth::FirebaseAuth, bearer_token::BearerToken};
+use roleguard::RoleGuard;
 
-embed_migrations!();
+pub struct ServerState {
+    pub auth: FirebaseAuth,
+}
+
+
+#[get("/")]
+async fn hello_world(_auth: AuthGuard, _role: RoleGuard) -> status::Accepted<String> {
+    // state: &State<ServerState>, token: BearerToken
+
+    // match state
+    //     .auth
+    //     .verify(&token).await// verify token
+
+    // {
+    //     Ok(token) => {
+    //         let uid = token.uid;
+    //         println!("Authentication succeeded with uid={uid}");
+    //         Status::Ok
+    //     }
+    //     Err(_) => {
+    //         println!("Authentication failed.");
+    //         Status::Forbidden
+    //     }
+    // }
+    status::Accepted(Some("Hello, world!".to_string()))
+}
 
 #[get("/test")]
 fn index() -> &'static str {
@@ -42,17 +74,21 @@ fn delete_user(id: i32) {
     user_service::delete_user(id);
 }
 
-#[put("/users", data = "<user>")]
-fn update_user(user: Json<User>) -> Json<User> {
-    Json(user_service::update_user(user.into_inner()))
+#[put("/users/<id>/increase_score")]
+fn update_user(id: i32) -> Json<User> {
+    Json(user_service::increase_score(id))
 }
 
 #[launch]
 fn rocket() -> _ {
-    match embedded_migrations::run(&db::create_connection()) {
-        Ok(_) => rocket::build().mount(
+    let firebase_auth = FirebaseAuth::try_from_json_file("firebase-credentials.json")
+        .expect("Failed to read Firebase credentials");
+
+    rocket::build()
+        .mount(
             "/api",
             routes![
+                hello_world,
                 index,
                 create_user,
                 get_user,
@@ -60,7 +96,8 @@ fn rocket() -> _ {
                 delete_user,
                 update_user
             ],
-        ),
-        Err(_) => panic!("migration failed"),
-    }
+        )
+        .manage(ServerState {
+            auth: firebase_auth,
+        })
 }

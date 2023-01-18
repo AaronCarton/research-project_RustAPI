@@ -10,3 +10,4 @@ diesel = { version = "2.0.0", features = ["mysql", "serde_json"] }
 serde_json = { version = "1.0.48", features = ["preserve_order"]}
 dotenv = "0.15.0"
 diesel_migrations = "1.4.0"
+rocket_firebase_auth = "0.2.4"
