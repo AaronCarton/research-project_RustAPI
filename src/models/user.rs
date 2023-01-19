@@ -3,7 +3,7 @@ use diesel::Queryable;
 use rocket::serde::{Deserialize, Serialize};
 
 #[derive(Queryable, Identifiable, Serialize, Deserialize)]
-#[table_name = "users"]
+#[diesel(table_name = users)]
 pub struct User {
     pub id: i32,
     pub uid: String,
@@ -13,7 +13,7 @@ pub struct User {
 }
 
 #[derive(Insertable, Deserialize)]
-#[table_name = "users"]
+#[diesel(table_name = users)]
 pub struct NewUser {
     pub uid: String,
     pub role: Option<i32>,

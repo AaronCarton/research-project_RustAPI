@@ -8,7 +8,7 @@ use guards::{adminguard::AdminGuard, authguard::AuthGuard};
 mod db;
 mod models;
 mod routes;
-use routes::user_routes::*;
+use routes::{quiz_routes::*, user_routes::*};
 mod schema;
 mod services;
 use rocket::response::status;
@@ -60,6 +60,7 @@ fn rocket() -> _ {
                 increase_score
             ],
         )
+        .mount("/api/quiz", routes![create_quiz, get_quizs, get_quiz,])
         .manage(ServerState {
             auth: firebase_auth,
         })
