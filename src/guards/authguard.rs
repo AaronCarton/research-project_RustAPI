@@ -2,10 +2,11 @@ use crate::guards::ServerState;
 use rocket::http::Status;
 use rocket::request::{self, FromRequest, Outcome, Request};
 use rocket::State;
-use rocket_firebase_auth::auth::DecodedToken;
 use rocket_firebase_auth::bearer_token::BearerToken;
 
-pub struct AuthGuard(DecodedToken);
+pub struct AuthGuard {
+    pub uid: String,
+}
 
 #[derive(Debug)]
 pub enum AuthGuardError {
@@ -35,7 +36,7 @@ impl<'r> FromRequest<'r> for AuthGuard {
             Ok(token) => {
                 let uid = &token.uid;
                 println!("Authentication succeeded with uid={}", uid);
-                Outcome::Success(AuthGuard(token))
+                Outcome::Success(AuthGuard { uid: uid.clone() })
             }
             Err(_) => {
                 println!("Authentication failed.");
