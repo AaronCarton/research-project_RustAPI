@@ -9,8 +9,8 @@ CREATE TABLE `user_history` (
     PRIMARY KEY (`id`),
     KEY `history_question_key` (`question_id`),
     KEY `history_user_key` (`user_id`),
-    CONSTRAINT `history_question_key` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT `history_user_key` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT `history_question_key` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `history_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 DEFAULT CHARSET = latin1;
 
 --

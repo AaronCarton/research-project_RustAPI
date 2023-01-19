@@ -1,7 +1,7 @@
 --
 -- Table structure for table `question`
 --
-CREATE TABLE `question` (
+CREATE TABLE `questions` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `question` varchar(50) NOT NULL,
     `answers` text NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE `question` (
 -- Dumping data for table `question`
 --
 INSERT INTO
-    `question` (`id`, `question`, `answers`, `correct_answer`)
+    `questions` (`id`, `question`, `answers`, `correct_answer`)
 VALUES
     (
         2,

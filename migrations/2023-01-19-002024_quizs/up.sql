@@ -1,7 +1,7 @@
 --
 -- Table structure for table `quiz`
 --
-CREATE TABLE `quiz` (
+CREATE TABLE `quizs` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `name` varchar(25) NOT NULL,
     PRIMARY KEY (`id`)
@@ -11,6 +11,6 @@ CREATE TABLE `quiz` (
 -- Dumping data for table `quiz`
 --
 INSERT INTO
-    `quiz` (`id`, `name`)
+    `quizs` (`id`, `name`)
 VALUES
     (1, 'Animal Group Names');

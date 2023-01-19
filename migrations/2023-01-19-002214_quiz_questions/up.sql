@@ -8,8 +8,8 @@ CREATE TABLE `quiz_questions` (
     PRIMARY KEY (`id`),
     UNIQUE KEY `question_id` (`question_id`),
     KEY `quiz_id_key` (`quiz_id`),
-    CONSTRAINT `question_id_key` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT `quiz_id_key` FOREIGN KEY (`quiz_id`) REFERENCES `quiz` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT `question_id_key` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT `quiz_id_key` FOREIGN KEY (`quiz_id`) REFERENCES `quizs` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 DEFAULT CHARSET = latin1;
 
 --
