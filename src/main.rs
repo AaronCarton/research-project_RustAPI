@@ -52,7 +52,7 @@ fn rocket() -> _ {
         .mount("/api", routes![hello_world, index,])
         .mount(
             "/api/users",
-            routes![create_user, get_users, get_user, reset_user],
+            routes![create_user, get_users, get_user, get_self, reset_user],
         )
         .mount(
             "/api/quiz",
