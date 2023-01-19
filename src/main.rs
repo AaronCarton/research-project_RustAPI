@@ -57,7 +57,8 @@ fn rocket() -> _ {
                 get_users,
                 get_user,
                 delete_user,
-                increase_score
+                increase_score,
+                get_user_joined
             ],
         )
         .mount("/api/quiz", routes![create_quiz, get_quizs, get_quiz,])

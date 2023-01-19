@@ -1,4 +1,4 @@
-use crate::models::user::{NewUser, User};
+use crate::models::user::{NewUser, User, UserModel};
 use crate::services::user_service;
 use rocket::serde::json::Json;
 
@@ -11,6 +11,11 @@ pub fn create_user(payload: Json<NewUser>) -> Json<User> {
 #[get("/")]
 pub fn get_users() -> Json<Vec<User>> {
     Json(user_service::get_users())
+}
+
+#[get("/test/<id>")]
+pub fn get_user_joined(id: i32) -> Json<UserModel> {
+    Json(user_service::get_user_joined(id))
 }
 
 #[get("/<id>")]

@@ -1,6 +1,6 @@
 use crate::db::establish_connection;
-use crate::models::user::{NewUser, User};
-use crate::schema::users;
+use crate::models::user::{NewUser, User, UserHistory, UserModel};
+use crate::schema::{questions, user_history, users};
 use diesel::prelude::*;
 
 pub fn create_user(new_user: NewUser) -> User {
@@ -26,6 +26,39 @@ pub fn get_users() -> Vec<User> {
 pub fn get_user(id: i32) -> User {
     let connection = &mut establish_connection();
     users::table.find(id).first(connection).unwrap()
+}
+
+pub fn get_user_joined(id: i32) -> UserModel {
+    let connection = &mut establish_connection();
+
+    // get user's history (History table joined with Question table)
+    let history = user_history::table
+        .inner_join(questions::table)
+        .filter(user_history::columns::user_id.eq(id))
+        .select((
+            questions::columns::id,
+            questions::columns::question,
+            user_history::columns::answer,
+        ))
+        .load::<UserHistory>(connection)
+        .unwrap();
+
+    // get user's info
+    let result = users::table
+        .filter(users::columns::id.eq(id))
+        .first::<User>(connection)
+        .unwrap();
+
+    // combine into custom model
+    let user_model = UserModel {
+        uid: result.uid,
+        role: result.role,
+        username: result.username,
+        score: result.score,
+        history: history,
+    };
+
+    user_model
 }
 
 pub fn get_user_by_uid(uid: String) -> User {
