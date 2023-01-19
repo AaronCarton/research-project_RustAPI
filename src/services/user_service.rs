@@ -102,12 +102,12 @@ pub fn get_user_by_uid(uid: String) -> UserModel {
     join_user(user)
 }
 
-pub fn delete_user(id: i32) {
-    let connection = &mut establish_connection();
-    diesel::delete(users::table.find(id))
-        .execute(connection)
-        .unwrap();
-}
+// pub fn delete_user(id: i32) {
+//     let connection = &mut establish_connection();
+//     diesel::delete(users::table.find(id))
+//         .execute(connection)
+//         .unwrap();
+// }
 
 pub fn reset_user(uid: String) -> UserModel {
     let connection = &mut establish_connection();

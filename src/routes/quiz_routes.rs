@@ -20,10 +20,10 @@ pub fn get_quiz(id: i32) -> Json<QuizModel> {
     Json(quiz_service::get_quiz(id))
 }
 
-#[post("/<id>/answer/<question_id>", data = "<answer>")]
+#[post("/<_id>/answer/<question_id>", data = "<answer>")]
 pub fn answer_quiz_question(
     auth: AuthGuard,
-    id: i32,
+    _id: i32,
     question_id: i32,
     answer: String,
 ) -> Json<ClientResponse> {
