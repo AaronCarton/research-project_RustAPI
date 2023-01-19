@@ -52,16 +52,12 @@ fn rocket() -> _ {
         .mount("/api", routes![hello_world, index,])
         .mount(
             "/api/users",
-            routes![
-                create_user,
-                get_users,
-                get_user,
-                delete_user,
-                increase_score,
-                get_user_joined
-            ],
+            routes![create_user, get_users, get_user, reset_user],
         )
-        .mount("/api/quiz", routes![create_quiz, get_quizs, get_quiz,])
+        .mount(
+            "/api/quiz",
+            routes![create_quiz, get_quizs, get_quiz, answer_quiz_question],
+        )
         .manage(ServerState {
             auth: firebase_auth,
         })

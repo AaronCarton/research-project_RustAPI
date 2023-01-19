@@ -13,22 +13,12 @@ pub fn get_users() -> Json<Vec<User>> {
     Json(user_service::get_users())
 }
 
-#[get("/test/<id>")]
-pub fn get_user_joined(id: i32) -> Json<UserModel> {
-    Json(user_service::get_user_joined(id))
-}
-
 #[get("/<id>")]
-pub fn get_user(id: i32) -> Json<User> {
+pub fn get_user(id: i32) -> Json<UserModel> {
     Json(user_service::get_user(id))
 }
 
-#[delete("/<id>")]
-pub fn delete_user(id: i32) {
-    user_service::delete_user(id);
-}
-
-#[put("/<id>/increase_score")]
-pub fn increase_score(id: i32) -> Json<User> {
-    Json(user_service::increase_score(id))
+#[delete("/reset/<uid>")]
+pub fn reset_user(uid: String) -> Json<UserModel> {
+    Json(user_service::reset_user(uid))
 }

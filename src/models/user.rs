@@ -1,3 +1,4 @@
+use crate::schema::user_history;
 use crate::schema::users;
 use diesel::Queryable;
 use rocket::serde::{Deserialize, Serialize};
@@ -22,6 +23,7 @@ pub struct UserHistory {
 
 #[derive(Queryable, Serialize, Deserialize)]
 pub struct UserModel {
+    pub id: i32,
     pub uid: String,
     pub role: i32,
     pub username: String,
@@ -36,4 +38,12 @@ pub struct NewUser {
     pub role: Option<i32>,
     pub username: Option<String>,
     pub score: Option<i32>,
+}
+
+#[derive(Insertable, Deserialize)]
+#[diesel(table_name = user_history)]
+pub struct NewUserHistory {
+    pub user_id: i32,
+    pub question_id: i32,
+    pub answer: String,
 }
