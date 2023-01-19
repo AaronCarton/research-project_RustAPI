@@ -1,18 +1,11 @@
 // @generated automatically by Diesel CLI.
 
 diesel::table! {
-    question (id) {
+    questions (id) {
         id -> Integer,
         question -> Varchar,
         answers -> Text,
         correct_answer -> Varchar,
-    }
-}
-
-diesel::table! {
-    quiz (id) {
-        id -> Integer,
-        name -> Varchar,
     }
 }
 
@@ -25,12 +18,9 @@ diesel::table! {
 }
 
 diesel::table! {
-    user (id) {
+    quizs (id) {
         id -> Integer,
-        uid -> Varchar,
-        role -> Integer,
-        username -> Varchar,
-        score -> Integer,
+        name -> Varchar,
     }
 }
 
@@ -43,15 +33,25 @@ diesel::table! {
     }
 }
 
-diesel::joinable!(quiz_questions -> question (question_id));
-diesel::joinable!(quiz_questions -> quiz (quiz_id));
-diesel::joinable!(user_history -> question (question_id));
-diesel::joinable!(user_history -> user (user_id));
+diesel::table! {
+    users (id) {
+        id -> Integer,
+        uid -> Varchar,
+        role -> Integer,
+        username -> Varchar,
+        score -> Integer,
+    }
+}
+
+diesel::joinable!(quiz_questions -> questions (question_id));
+diesel::joinable!(quiz_questions -> quizs (quiz_id));
+diesel::joinable!(user_history -> questions (question_id));
+diesel::joinable!(user_history -> users (user_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
-    question,
-    quiz,
+    questions,
     quiz_questions,
-    user,
+    quizs,
     user_history,
+    users,
 );

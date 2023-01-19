@@ -1,15 +1,12 @@
 use crate::db::establish_connection;
-use crate::models::{NewUser, User};
+use crate::models::user::{NewUser, User};
 use crate::schema::users;
 use diesel::prelude::*;
-use diesel::result::Error;
-use std::borrow::BorrowMut;
-use std::time::SystemTime;
 
 pub fn create_user(new_user: NewUser) -> User {
     use crate::schema::users::dsl::*;
-    let connection = &mut establish_connection();
 
+    let connection = &mut establish_connection();
     diesel::insert_into(users)
         .values(&new_user)
         .execute(connection)
@@ -20,7 +17,6 @@ pub fn create_user(new_user: NewUser) -> User {
 
 pub fn get_users() -> Vec<User> {
     use crate::schema::users::dsl::*;
-
     let connection = &mut establish_connection();
     let results = users.load::<User>(connection).unwrap();
 
@@ -45,15 +41,6 @@ pub fn delete_user(id: i32) {
     diesel::delete(users::table.find(id))
         .execute(connection)
         .unwrap();
-}
-
-pub fn update_user(user: User) -> User {
-    // let connection = &mut establish_connection();
-    // diesel::update(users::table.find(user.id))
-    //     .set(&user)
-    //     .get_result(connection)
-    //     .unwrap()
-    user
 }
 
 pub fn increase_score(id: i32) -> User {

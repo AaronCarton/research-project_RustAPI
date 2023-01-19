@@ -1,10 +1,9 @@
+use crate::guards::ServerState;
 use rocket::http::Status;
 use rocket::request::{self, FromRequest, Outcome, Request};
 use rocket::State;
 use rocket_firebase_auth::auth::DecodedToken;
-use rocket_firebase_auth::{auth::FirebaseAuth, bearer_token::BearerToken};
-
-use crate::ServerState;
+use rocket_firebase_auth::bearer_token::BearerToken;
 
 pub struct AuthGuard(DecodedToken);
 
