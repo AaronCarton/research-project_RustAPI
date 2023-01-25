@@ -4,3 +4,4 @@ todo
 firebase-credentials.json
 
 frontend/.env
+.DS_Store

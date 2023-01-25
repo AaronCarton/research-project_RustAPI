@@ -48,7 +48,23 @@ fn rocket() -> _ {
     let firebase_auth = FirebaseAuth::try_from_json_file("firebase-credentials.json")
         .expect("Failed to read Firebase credentials");
 
+    // set CORS headers
+
     rocket::build()
+        .attach(
+            rocket_cors::CorsOptions {
+                allowed_origins: rocket_cors::AllowedOrigins::all(),
+                allowed_methods: vec![rocket::http::Method::Get, rocket::http::Method::Post]
+                    .into_iter()
+                    .map(From::from)
+                    .collect(),
+                allowed_headers: rocket_cors::AllowedHeaders::all(),
+                allow_credentials: true,
+                ..Default::default()
+            }
+            .to_cors()
+            .expect("Failed to create CORS"),
+        )
         .mount("/api", routes![hello_world, index,])
         .mount(
             "/api/users",
