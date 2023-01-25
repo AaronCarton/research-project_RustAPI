@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "2b243e23-b886-4c99-bb6c-0d10c3b70a0d",
+		"_postman_id": "39664fa0-18db-4a22-bb7f-f28ff1b14df6",
 		"name": "Research project: Rust API",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25025522"
 	},
 	"item": [
 		{
@@ -12,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"aestas\"\r\n}",
+					"raw": "{\r\n    \"username\": \"aaron\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -40,14 +41,18 @@
 		},
 		{
 			"name": "Fetch self",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
 			"request": {
 				"method": "GET",
 				"header": [
 					{
-						"key": "",
-						"value": "",
-						"type": "text",
-						"disabled": true
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
 					}
 				],
 				"url": {
@@ -100,10 +105,15 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "Haunting"
+					"raw": "{\n    \"answer\": \"Vultures\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "http://0.0.0.0:8000/api/quiz/1/answer/4",
+					"raw": "http://0.0.0.0:8000/api/quiz/1/answer/2",
 					"protocol": "http",
 					"host": [
 						"0",
@@ -117,7 +127,32 @@
 						"quiz",
 						"1",
 						"answer",
-						"4"
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch quiz score",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://0.0.0.0:8000/api/quiz/1/score",
+					"protocol": "http",
+					"host": [
+						"0",
+						"0",
+						"0",
+						"0"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"quiz",
+						"1",
+						"score"
 					]
 				}
 			},
@@ -149,6 +184,16 @@
 			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
