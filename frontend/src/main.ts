@@ -9,7 +9,6 @@ import App from './App.vue'
 
 import router from './bootstrap/router'
 import useAuthentication from './composables/useAuthentication'
-import useUser from './composables/useUser'
 
 import Toast, { PluginOptions } from 'vue-toastification'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
@@ -20,6 +19,7 @@ const { restoreUser } = useAuthentication()
 // const { loadUser } = useUser()
 
 ;(async function () {
+  console.log('Restoring user')
   await restoreUser().then(async (fUser) => {
     console.log('Firebase token', await fUser?.value?.getIdToken())
     // if (fUser)
