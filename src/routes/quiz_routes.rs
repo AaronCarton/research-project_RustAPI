@@ -1,5 +1,6 @@
 use crate::guards::authguard::AuthGuard;
 use crate::models::clientresponse::ClientResponse;
+use crate::models::question::AnswerQuestionModel;
 use crate::models::quiz::{NewQuiz, Quiz, QuizModel};
 use crate::services::{quiz_service, user_service};
 use rocket::serde::json::Json;
@@ -20,12 +21,22 @@ pub fn get_quiz(id: i32) -> Json<QuizModel> {
     Json(quiz_service::get_quiz(id))
 }
 
-#[post("/<_id>/answer/<question_id>", data = "<answer>")]
+#[post("/<quiz_id>/answer/<question_id>", data = "<answer>")]
 pub fn answer_quiz_question(
     auth: AuthGuard,
-    _id: i32,
+    quiz_id: i32,
     question_id: i32,
-    answer: String,
+    answer: Json<AnswerQuestionModel>,
 ) -> Json<ClientResponse> {
-    Json(user_service::answer_question(auth.uid, question_id, answer))
+    Json(user_service::answer_question(
+        auth.uid,
+        quiz_id,
+        question_id,
+        answer.into_inner().answer,
+    ))
+}
+
+#[get("/<quiz_id>/score")]
+pub fn get_quiz_score(auth: AuthGuard, quiz_id: i32) -> Json<i32> {
+    Json(user_service::get_quiz_score(auth.uid, quiz_id))
 }

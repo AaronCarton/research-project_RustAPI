@@ -16,9 +16,11 @@ pub struct User {
 #[derive(Queryable, Serialize, Deserialize)]
 #[diesel(table_name = user_history)]
 pub struct UserHistory {
+    pub quiz_id: i32,
     pub question_id: i32,
     pub question: String,
     pub answer: String,
+    pub correct: bool,
 }
 
 #[derive(Queryable, Serialize, Deserialize)]
@@ -42,6 +44,8 @@ pub struct NewUser {
 #[diesel(table_name = user_history)]
 pub struct NewUserHistory {
     pub user_id: i32,
+    pub quiz_id: i32,
     pub question_id: i32,
     pub answer: String,
+    pub correct: bool,
 }

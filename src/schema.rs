@@ -21,6 +21,7 @@ diesel::table! {
     quizs (id) {
         id -> Integer,
         name -> Varchar,
+        description -> Varchar,
     }
 }
 
@@ -28,8 +29,10 @@ diesel::table! {
     user_history (id) {
         id -> Integer,
         user_id -> Integer,
+        quiz_id -> Integer,
         question_id -> Integer,
         answer -> Varchar,
+        correct -> Bool,
     }
 }
 
@@ -46,6 +49,7 @@ diesel::table! {
 diesel::joinable!(quiz_questions -> questions (question_id));
 diesel::joinable!(quiz_questions -> quizs (quiz_id));
 diesel::joinable!(user_history -> questions (question_id));
+diesel::joinable!(user_history -> quizs (quiz_id));
 diesel::joinable!(user_history -> users (user_id));
 
 diesel::allow_tables_to_appear_in_same_query!(

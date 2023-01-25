@@ -2,7 +2,7 @@ use crate::db::establish_connection;
 use crate::models::clientresponse::ClientResponse;
 use crate::models::question::Question;
 use crate::models::user::{NewUser, NewUserHistory, User, UserHistory, UserModel};
-use crate::schema::{questions, user_history, users};
+use crate::schema::{questions, quizs, user_history, users};
 use diesel::prelude::*;
 
 pub fn create_user(new_user: NewUser) -> User {
@@ -32,7 +32,27 @@ pub fn get_user(id: i32) -> UserModel {
     join_user(user)
 }
 
-pub fn answer_question(uid: String, question_id: i32, answer: String) -> ClientResponse {
+pub fn get_quiz_score(uid: String, quiz_id: i32) -> i32 {
+    let connection = &mut establish_connection();
+    let user = get_user_by_uid(uid);
+
+    let score = user
+        .history
+        .iter()
+        .filter(|h| h.quiz_id == quiz_id)
+        .map(|h| h.correct)
+        .filter(|c| *c)
+        .count() as i32;
+
+    score
+}
+
+pub fn answer_question(
+    uid: String,
+    quiz_id: i32,
+    question_id: i32,
+    answer: String,
+) -> ClientResponse {
     let connection = &mut establish_connection();
     let user = get_user_by_uid(uid.clone());
     let question: Question = questions::table
@@ -62,7 +82,7 @@ pub fn answer_question(uid: String, question_id: i32, answer: String) -> ClientR
     }
 
     // add user history row
-    add_user_history_row(user.id, question_id, answer);
+    add_user_history_row(user.id, quiz_id, question_id, answer, correct);
 
     return ClientResponse {
         success: true,
@@ -71,19 +91,27 @@ pub fn answer_question(uid: String, question_id: i32, answer: String) -> ClientR
         data: serde_json::json!({
             "correct": correct,
             "correct_answer": question.correct_answer,
-            "score": get_user(user.id).score,
+            "total_score": get_user(user.id).score,
         }),
     };
 }
 
-pub fn add_user_history_row(user_id: i32, question_id: i32, answer: String) {
+pub fn add_user_history_row(
+    user_id: i32,
+    quiz_id: i32,
+    question_id: i32,
+    answer: String,
+    correct: bool,
+) {
     let connection = &mut establish_connection();
 
     // create new user history row
     let new_user_history = NewUserHistory {
         user_id,
+        quiz_id,
         question_id,
         answer,
+        correct,
     };
     // insert
     diesel::insert_into(user_history::table)
@@ -146,11 +174,14 @@ pub fn join_user(user: User) -> UserModel {
     // get user's history (History table joined with Question table)
     let history = user_history::table
         .inner_join(questions::table)
+        .inner_join(quizs::table)
         .filter(user_history::columns::user_id.eq(user.id))
         .select((
+            quizs::columns::id,
             questions::columns::id,
             questions::columns::question,
             user_history::columns::answer,
+            user_history::columns::correct,
         ))
         .load::<UserHistory>(connection)
         .unwrap();

@@ -1,4 +1,5 @@
 use crate::db::establish_connection;
+use crate::models::question::{Answer, QuestionModel};
 use crate::models::quiz::{NewQuiz, Quiz, QuizModel};
 use crate::schema::quizs;
 use diesel::prelude::*;
@@ -34,9 +35,34 @@ pub fn get_quiz(id: i32) -> QuizModel {
     let mut questions = questions;
     questions.sort_by(|a, b| a.id.cmp(&b.id));
 
+    // for each quesiton, convert answers to a vector of Answer
+    let questions: Vec<QuestionModel> = questions
+        .into_iter()
+        .map(|q| {
+            // convert answers to a vector of Answer models
+            let answers = q
+                .answers
+                .split(',')
+                .collect::<Vec<&str>>()
+                .into_iter()
+                .map(|a| Answer {
+                    answer: a.to_string(),
+                    is_correct: a == q.correct_answer,
+                })
+                .collect();
+            // create custom question model
+            QuestionModel {
+                id: q.id,
+                question: q.question,
+                answers,
+            }
+        })
+        .collect();
+
     QuizModel {
         id: quiz.id,
         name: quiz.name,
+        description: quiz.description,
         questions,
     }
 }
