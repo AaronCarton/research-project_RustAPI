@@ -26,8 +26,11 @@ WORKDIR /app
 
 # Install MySQL client for Diesel
 RUN apt update
+# install certificates for https (firebase)
+RUN apt install ca-certificates -y 
 RUN apt install libmysqlclient-dev -y
 RUN apt install libmariadbd-dev -y
+
 
 # Copy the compiled binaries into the new layer.
 COPY --from=builder /rust_api_project/target/release/rust_api_project .
