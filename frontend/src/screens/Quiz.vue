@@ -47,7 +47,7 @@ export default {
 
   setup() {
     const { params } = useRoute()
-    const { data, isFinished } = useAxios(`http://127.0.0.1:8000/api/quiz/${params.id}`)
+    const { data, isFinished } = useAxios(`${window['env']['API_URL']}/quiz/${params.id}`)
     const quiz = computed(() => data.value as Quiz | undefined)
     const currentQuestionIndex = ref(0)
     const currentQuestion = ref<QuestionType>()

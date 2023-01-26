@@ -1,8 +1,7 @@
 version: "3"
 
 services:
-  # Database
-  db:
+  mysql:
     platform: linux/x86_64
     image: mysql:5.7
     volumes:
@@ -15,10 +14,9 @@ services:
       MYSQL_DATABASE: api
       MYSQL_PASSWORD: root
 
-  # phpmyadmin
   phpmyadmin:
     depends_on:
-      - db
+      - mysql
     platform: linux/x86_64
     image: phpmyadmin
     restart: always
@@ -28,6 +26,35 @@ services:
       PMA_HOST: db
       PMA_PMADB: phpmyadmin
       MYSQL_ROOT_PASSWORD: root
+
+  api:
+    depends_on:
+      - mysql
+    platform: linux/x86_64
+    image: rust_api:test
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./firebase-credentials.json:/app/firebase-credentials.json
+    environment:
+      DATABASE_URL: mysql://root:root@mysql:3306/api
+
+  frontend:
+    depends_on:
+      - api
+    platform: linux/x86_64
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3003:8082"
+    environment:
+      API_URL: http://localhost:8000/api
 
 volumes:
   db_data:

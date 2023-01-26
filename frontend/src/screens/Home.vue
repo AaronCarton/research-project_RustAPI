@@ -34,7 +34,7 @@ export default {
 
     const allQuizzes = () => {
       axios
-        .get('http://127.0.0.1:8000/api/quiz', {
+        .get(`${window['env']['API_URL']}/quiz`, {
           headers: {
             Accept: 'application/json',
           },

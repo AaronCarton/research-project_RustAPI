@@ -63,7 +63,7 @@ export default {
     async function answerQuestion() {
       // send answer to http://0.0.0.0:8000/api/quiz/1/answer/5 with useAxios
       const { data, isFinished } = useAxios(
-        `http://0.0.0.0:8000/api/quiz/${quizId}/answer/${question.id}`,
+        `${window['env']['API_URL']}/quiz/${quizId}/answer/${question.id}`,
         {
           method: 'POST',
           headers: {

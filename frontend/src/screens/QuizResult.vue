@@ -29,7 +29,7 @@ export default {
     const { user } = useAuthentication()
 
     const getScore = async () => {
-      return useAxios(`http://0.0.0.0:8000/api/quiz/${params.id}/score`, {
+      return useAxios(`${window['env']['API_URL']}/quiz/${params.id}/score`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${await user.value?.getIdToken()}`,

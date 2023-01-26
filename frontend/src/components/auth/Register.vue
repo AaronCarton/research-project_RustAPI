@@ -97,7 +97,6 @@ import { Loader2, X } from 'lucide-vue-next'
 
 import useAuthentication from '../../composables/useAuthentication'
 import { useRoute, useRouter } from 'vue-router'
-import useUser from '../../composables/useUser'
 
 export default defineComponent({
   components: {
@@ -108,7 +107,6 @@ export default defineComponent({
   setup() {
     const { replace } = useRouter()
     const { redirectedFrom } = useRoute()
-    const { loadUser } = useUser()
     const { register } = useAuthentication()
 
     const errorMessage: Ref<string> = ref('')
@@ -132,11 +130,7 @@ export default defineComponent({
         .then((u) => {
           console.log('User created: ', u)
 
-          loadUser().then(() => {
-            console.log('User loaded')
-
-            replace({ path: redirectedFrom?.path || '/' })
-          })
+          replace({ path: redirectedFrom?.path || '/' })
         })
         .catch((error) => {
           errorMessage.value = error.message
