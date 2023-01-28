@@ -8,6 +8,8 @@ use guards::{adminguard::AdminGuard, authguard::AuthGuard};
 mod db;
 mod models;
 mod routes;
+
+use rocket::serde::json::json;
 use routes::{quiz_routes::*, user_routes::*};
 mod schema;
 mod services;
@@ -41,6 +43,16 @@ async fn hello_world(_auth: AuthGuard, _admin: AdminGuard) -> status::Accepted<S
 #[get("/test")]
 fn index() -> &'static str {
     "hello world"
+}
+
+// forbidden cather with error json response
+#[catch(403)]
+fn forbidden() -> serde_json::Value {
+    json!({
+        "error": "Forbidden",
+        "message":     "You are not allowed to access this resource. Either you did not provide a valid token or you are not authorized to access this resource."
+
+    })
 }
 
 #[launch]
@@ -80,6 +92,7 @@ fn rocket() -> _ {
                 get_quiz_score
             ],
         )
+        .register("/", catchers![forbidden])
         .manage(ServerState {
             auth: firebase_auth,
         })
