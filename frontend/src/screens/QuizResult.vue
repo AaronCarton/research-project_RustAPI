@@ -1,10 +1,12 @@
 <template>
   <div>
     <div class="flex flex-col items-center">
-      <h2 class="text-xl font-semibold">Your score is:</h2>
-      <h2 class="text-2xl font-semibold">{{ score }} / {{ quiz.questions.length }}</h2>
+      <h2 class="text-2xl font-semibold">Your score is:</h2>
+      <h2 class="text-3xl font-semibold">{{ score }} / {{ quiz.questions.length }}</h2>
       <RouterLink :to="`/`">
-        <button class="bg-red-500 mt-4 text-white p-2 rounded">Home</button>
+        <button class="bg-red-500 mt-8 text-lg font-semibold text-white py-2 px-6 rounded">
+          Home
+        </button>
       </RouterLink>
     </div>
   </div>

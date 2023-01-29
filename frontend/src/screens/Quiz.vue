@@ -1,18 +1,19 @@
 <template>
-  <div class="bg-gray-200 p-4 flex flex-column">
-    <div class="flex justify-between">
-      <h1 class="text-xl font-bold mb-4">Quiz</h1>
-      <h1 class="text-lg font-bold mb-4 ml-3">
-        {{
-          currentQuestionIndex < quiz.questions.length
-            ? currentQuestionIndex + 1
-            : quiz.questions.length
-        }}/8
-      </h1>
-    </div>
+  <div class="p-4 flex flex-col min-h-screen items-center justify-center">
     <Suspense>
-      <div class="mb-4 flex flex-col" v-if="quiz">
-        <p class="text-lg ml-3 font-semibold">{{ quiz.name }}</p>
+      <div class="mb-4 flex flex-col w-2/3" v-if="quiz">
+        <div class="flex justify-between">
+          <p
+            :class="`text-2xl font-semibold ${
+              currentQuestionIndex == quiz?.questions.length ? 'mx-auto mb-6' : ''
+            } `"
+          >
+            {{ quiz.name }}
+          </p>
+          <template v-if="currentQuestionIndex < quiz?.questions.length">
+            <p class="text-xl font-bold mb-4 ml-3">{{ currentQuestionIndex + 1 }}/8</p>
+          </template>
+        </div>
         <template v-if="currentQuestion">
           <Question
             v-if="currentQuestionIndex < quiz.questions.length"
@@ -44,7 +45,6 @@ export default {
     Question,
     QuizResult,
   },
-
   setup() {
     const { params } = useRoute()
     const { data, isFinished } = useAxios(`${window['env']['API_URL']}/quiz/${params.id}`)
@@ -58,6 +58,8 @@ export default {
 
     watch(isFinished, () => {
       if (quiz.value) {
+        console.log('quiz loaded', quiz.value)
+
         currentQuestion.value = quiz.value.questions[currentQuestionIndex.value]
       }
     })

@@ -1,32 +1,42 @@
 <template>
-  <div class="bg-gray-200 p-4">
-    <div class="mb-4">
-      <p class="mb-2">{{ question.question }}</p>
+  <div>
+    <div class="mb-2">
+      <p class="mb-6 text-lg font-semibold">{{ question.question }}</p>
       <div class="grid grid-cols-2 grid-rows-2 gap-4">
         <div
           v-for="(answer, index) in question.answers"
           :key="index"
           @click="selectAnswer(index)"
           :class="{
-            'border-2 border-gray-800': selectedAnswer === index,
-            'bg-red-500': !answer.is_correct && showResults,
-            'bg-green-500': answer.is_correct && showResults,
+            'bg-neutral-400 !border-neutral-200': selectedAnswer === index,
+            '!bg-red-500 !text-neutral-100': !answer.is_correct && showResults,
+            '!bg-green-500 !text-neutral-100': answer.is_correct && showResults,
           }"
-          class="mb-2 cursor-pointer rounded p-2 border-2 border-gray-300 shadow-md"
+          class="mb-2 cursor-pointer text-lg border-5 border-transparent bg-neutral-100 text-center font-bold rounded-xl px-2 py-3 text-neutral-800 shadow-md"
         >
           {{ answer.answer }}
         </div>
       </div>
     </div>
 
-    <template v-if="!showResults">
-      <button class="bg-red-500 text-white p-2 rounded" @click="answerQuestion">
-        Show Results
-      </button>
-    </template>
-    <template v-else>
-      <button class="bg-red-500 text-white p-2 rounded" @click="nextQuestion()">Next</button>
-    </template>
+    <div class="flex justify-end mt-8">
+      <template v-if="!showResults">
+        <button
+          class="bg-red-500 font-semibold text-white w-1/4 py-3 rounded"
+          @click="answerQuestion"
+        >
+          Show Results
+        </button>
+      </template>
+      <template v-else>
+        <button
+          class="bg-red-500 font-semibold text-white py-3 w-1/4 rounded"
+          @click="nextQuestion()"
+        >
+          Next
+        </button>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -57,6 +67,7 @@ export default {
     const showResults = ref(false)
 
     function selectAnswer(index) {
+      if (showResults.value) return
       selectedAnswer.value = index
     }
 

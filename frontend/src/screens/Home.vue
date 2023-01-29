@@ -1,7 +1,29 @@
 <template>
-  <div>Home</div>
-  <div v-for="quiz in quizzes" class="flex gap-4 m-6">
-    <QuizCard :name="quiz.name" :description="quiz.description" :id="quiz.id" />
+  <div class="flex">
+    <div class="flex flex-col mx-auto mt-10 text-center text-lg font-semibold">
+      <XCircle
+        @click="resetUserData"
+        class="absolute top-3 right-5 text-red-500 h-9 w-9 cursor-pointer active:text-red-600"
+      />
+      <p class="text-3xl mb-3">
+        Hi there,
+        <span v-if="userData" class="capitalize">{{ userData?.username }}</span>
+        <span
+          @click="$router.push('/auth/login')"
+          v-else
+          class="text-red-600 cursor-pointer hover:text-red-700"
+          >please login</span
+        >
+        !
+      </p>
+      <p class="text-1xl">Your current total score is:</p>
+      <p class="text-4xl">{{ userData?.score }}</p>
+    </div>
+  </div>
+  <div class="container mx-auto mt-20">
+    <div v-for="quiz in quizzes" class="flex gap-4 m-6">
+      <QuizCard :name="quiz.name" :description="quiz.description" :id="quiz.id" />
+    </div>
   </div>
 </template>
 
@@ -10,27 +32,43 @@ import QuizCard from './components/QuizCard.vue'
 import { useToast } from 'vue-toastification'
 import axios from 'axios'
 import Quiz from '../interfaces/quiz.interface'
-import { watch, ref } from 'vue'
+import User from '../interfaces/user.interface'
+import { ref } from 'vue'
+import { useAxios } from '@vueuse/integrations/useAxios'
+import useAuthentication from '../composables/useAuthentication'
+import { XCircle } from 'lucide-vue-next'
 export default {
   components: {
+    XCircle,
     QuizCard,
   },
-  setup() {
+  async setup() {
     const toast = useToast()
     const quizzes = ref<Quiz[]>([])
-    // const { user } = useAuthentication()
+    const { user } = useAuthentication()
+    const token = await user.value?.getIdToken()
+    const userData = ref<User>()
 
-    // const question = ref('What is the capital of France?')
-    // const answers = ref([
-    //   { text: 'Paris', isCorrect: true },
-    //   { text: 'Rome', isCorrect: false },
-    //   { text: 'Madrid', isCorrect: false },
-    //   { text: 'Berlin', isCorrect: false },
-    // ])
+    const getUserData = () => {
+      if (!token) return
+      useAxios(`${window['env']['API_URL']}/users/self`, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(({ data }) => (userData.value = data.value as User))
+    }
+    getUserData()
 
-    // function nextQuestion() {
-    //   toast.success('Correct!')
-    // }
+    const resetUserData = () => {
+      useAxios(`${window['env']['API_URL']}/users/self/reset`, {
+        method: 'DELETE',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      }).then(({ data }) => (userData.value = data.value as User))
+    }
 
     const allQuizzes = () => {
       axios
@@ -53,24 +91,10 @@ export default {
 
     allQuizzes()
 
-    // const getQuiz = async () => {
-    //   const { data, status } = await axios.get('http://127.0.0.1:8000/api/quiz/1', {
-    //     headers: {
-    //       Accept: 'application/json',
-    //     },
-    //   })
-
-    //   if (status !== 200) {
-    //     toast.error('Something went wrong')
-    //     console.log(data)
-    //     return null
-    //   }
-
-    //   return data as Quiz
-    // }
-
     return {
       quizzes,
+      userData,
+      resetUserData,
     }
   },
 }

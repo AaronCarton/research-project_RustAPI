@@ -23,7 +23,7 @@ const routes: RouteRecordRaw[] = [
 
   {
     path: '/quiz/:id',
-    component: () => import('../components/holders/AppHolder.vue'),
+    component: () => import('../components/holders/QuizHolder.vue'),
     children: [
       {
         path: '',

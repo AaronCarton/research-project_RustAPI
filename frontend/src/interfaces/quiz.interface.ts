@@ -5,4 +5,5 @@ export default interface Quiz {
   name: string
   description: string
   questions: Question[]
+  score: number
 }

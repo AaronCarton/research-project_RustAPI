@@ -97,6 +97,7 @@ import { Loader2, X } from 'lucide-vue-next'
 
 import useAuthentication from '../../composables/useAuthentication'
 import { useRoute, useRouter } from 'vue-router'
+import { useAxios } from '@vueuse/integrations/useAxios'
 
 export default defineComponent({
   components: {
@@ -127,10 +128,20 @@ export default defineComponent({
       }
 
       register(userInput.name, userInput.email, userInput.password)
-        .then((u) => {
+        .then(async (u) => {
           console.log('User created: ', u)
-
-          replace({ path: redirectedFrom?.path || '/' })
+          useAxios(`${window['env']['API_URL']}/users`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${await u.value?.getIdToken()}`,
+            },
+            data: {
+              username: userInput.name,
+            },
+          }).then((res) => {
+            console.log('User saved in DB: ', res)
+            replace({ path: redirectedFrom?.path || '/' })
+          })
         })
         .catch((error) => {
           errorMessage.value = error.message
