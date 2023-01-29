@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 flex flex-col min-h-screen items-center justify-center">
+  <div class="flex-col flex flex-1 items-center justify-center">
     <Suspense>
       <div class="mb-4 flex flex-col w-2/3" v-if="quiz">
         <div class="flex justify-between">

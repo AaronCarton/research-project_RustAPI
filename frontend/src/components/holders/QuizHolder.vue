@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-[#5347F3] min-h-screen text-neutral-100">
+  <div class="bg-[#5347F3] min-h-screen flex flex-col text-neutral-100">
     <RouterLink to="/">
       <ArrowLeft class="absolute top-3 left-3 w-8 h-8 text-white" />
     </RouterLink>

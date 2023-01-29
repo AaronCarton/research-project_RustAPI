@@ -1,9 +1,11 @@
 <template>
   <div class="p-4 flex flex-col border-3 border-[#FDFFFC] items-center card">
-    <h1 class="text-xl font-semibold">{{ name }}</h1>
-    <p class="text-lg">{{ description }}</p>
-    <RouterLink :to="`/quiz/${id}`">
-      <button class="bg-red-500 mt-4 text-white py-2 px-4 rounded">Start Quiz</button>
+    <div>
+      <h1 class="text-xl font-semibold mb-1 text-center">{{ name }}</h1>
+      <p class="text-lg mb-auto">{{ description }}</p>
+    </div>
+    <RouterLink :to="`/quiz/${id}`" class="mt-auto">
+      <button class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">Start Quiz</button>
     </RouterLink>
   </div>
 </template>

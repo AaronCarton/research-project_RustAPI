@@ -20,10 +20,15 @@
       <p class="text-4xl">{{ userData?.score }}</p>
     </div>
   </div>
-  <div class="container mx-auto mt-20">
-    <div v-for="quiz in quizzes" class="flex gap-4 m-6">
-      <QuizCard :name="quiz.name" :description="quiz.description" :id="quiz.id" />
-    </div>
+  <div class="container mx-auto mt-20 flex flex-wrap justify-center">
+    <QuizCard
+      v-for="quiz in quizzes"
+      class="flex gap-4 m-6 w-1/3"
+      :key="quiz.id"
+      :name="quiz.name"
+      :description="quiz.description"
+      :id="quiz.id"
+    />
   </div>
 </template>
 

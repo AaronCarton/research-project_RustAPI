@@ -12,7 +12,7 @@
             '!bg-red-500 !text-neutral-100': !answer.is_correct && showResults,
             '!bg-green-500 !text-neutral-100': answer.is_correct && showResults,
           }"
-          class="mb-2 cursor-pointer text-lg border-5 border-transparent bg-neutral-100 text-center font-bold rounded-xl px-2 py-3 text-neutral-800 shadow-md"
+          class="mb-2 cursor-pointer capitalize text-lg border-5 border-transparent bg-neutral-100 text-center font-bold rounded-xl px-2 py-3 text-neutral-800 shadow-md"
         >
           {{ answer.answer }}
         </div>
