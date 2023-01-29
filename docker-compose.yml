@@ -17,24 +17,21 @@ services:
   phpmyadmin:
     depends_on:
       - mysql
-    platform: linux/x86_64
     image: phpmyadmin
     restart: always
     ports:
       - "8035:80"
     environment:
-      PMA_HOST: db
+      PMA_HOST: mysql
       PMA_PMADB: phpmyadmin
       MYSQL_ROOT_PASSWORD: root
 
   api:
     depends_on:
       - mysql
-    platform: linux/x86_64
-    image: rust_api:test
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
     ports:
       - "8000:8000"
@@ -46,7 +43,6 @@ services:
   frontend:
     depends_on:
       - api
-    platform: linux/x86_64
     build:
       context: ./frontend
       dockerfile: Dockerfile
