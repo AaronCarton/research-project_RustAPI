@@ -14,4 +14,23 @@ CREATE TABLE `quizs` (
 INSERT INTO
     `quizs` (`id`, `name`, `description`)
 VALUES
-    (1, 'Animal Group Names', 'Can you name the group names for these animals?');
+    (
+        1,
+        'Animal Group Names',
+        'Can you name the group names for these animals?'
+    ),
+    (
+        2,
+        'Muppets Trivia',
+        'How well do you know the Muppets?'
+    ),
+    (
+        3,
+        'The Human Body',
+        'How much do you know about the human body?'
+    ),
+    (
+        4,
+        'Acronyms Vocabulary',
+        'From ASAP to NASA, how much do you know about acronyms?'
+    );

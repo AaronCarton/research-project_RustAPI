@@ -17,4 +17,10 @@ CREATE TABLE `users` (
 INSERT INTO
     `users` (`id`, `uid`, `role`, `username`, `score`)
 VALUES
-    (1, 'IwdPPTODpGhiKKVactBVYTflGX13', 0, 'aaron', 4);
+    (
+        1,
+        '9XppyFMscLe15daqncSpFXiSqKG2',
+        0,
+        'Aestas',
+        0
+    );

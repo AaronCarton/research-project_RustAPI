@@ -33,7 +33,6 @@ pub fn get_user(id: i32) -> UserModel {
 }
 
 pub fn get_quiz_score(uid: String, quiz_id: i32) -> i32 {
-    let connection = &mut establish_connection();
     let user = get_user_by_uid(uid);
 
     let score = user
