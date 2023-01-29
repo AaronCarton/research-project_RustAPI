@@ -1,9 +1,37 @@
 # Research Project: Rust API
 
 ## Setup
+Project can be easily launched with Docker, just run the `docker-compose.yml`!
 
-WIP
 
+You can also opt to launch it the manual way for development.
+
+**Note that you'll still need to host a MySQL database for this (also included in docker compose), this also assumes you have both NodeJS and Rust installed**
+#### API setup
+```
+# Install MySQL tools (Linux)
+$ sudo apt-get install libmysqlclient-dev
+
+# Install Diesel CLI (with MySQL features)
+$ cargo install diesel_cli --no-default-features --features mysql 
+
+# Seed database
+$ diesel database reset
+
+# Install API dependencies and run
+# cargo run
+```
+#### Frontend 
+```
+# go to Frontend directory
+$ cd ./frontend
+
+# Install dependencies
+$ npm install
+
+# Run dev server
+$ npm run dev
+```
 
 ## Usage
 
